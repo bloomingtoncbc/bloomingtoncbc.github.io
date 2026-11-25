@@ -1,0 +1,75 @@
+---
+import Page from '../layouts/Page.astro';
+import { COUNT_DATE } from '../consts';
+
+const countYear = COUNT_DATE.slice(0, 4);
+---
+
+<Page>
+	<div class="centered">
+		<p><strong>Welcome to the Bloomington MN Christmas Bird Count website!</strong></p>
+		<p>
+			Our count circle has been active since 1966. Here's where you'll find all the information about the CBC and how to
+			join/participate in the world's longest running citizen science project.
+		</p>
+	</div>
+
+	<p>
+		The Bloomington CBC is held on the first Saturday of the count season (on or after Dec 14) each year. Most years this
+		falls on the second Saturday of December, but sometimes it's on the third Saturday. Per Audubon protocol, the count must
+		be conducted on the designated day, so only birds counted on that day will be reported.
+	</p>
+	<p>
+		Our circle includes several suburbs on the south side of the Twin Cities. The circle is divided into 24 different areas,
+		each with its own counters assigned. Counters within an area may coordinate amongst themselves to cover that area. Some
+		smaller areas may be covered by a solo counter.
+	</p>
+	<p>
+		We welcome new counters! For those who don't have prior CBC experience, we will work to have you go with an experienced
+		counter. We distribute experienced counters according to what areas need coverage.
+	</p>
+	<p>
+		Normally we hold a post count gathering potluck at the Minnesota Valley National Wildlife Refuge visitor center.
+		Counters can bring their completed count sheets, and share how their day went. It's a nice opportunity to meet your
+		fellow counters and socialize a bit. We encourage you to attend and bring a side dish for the potluck!
+	</p>
+	<p>
+		Please review this website to learn more about the count and use it as a resource for all the information you need to
+		have a successful and enjoyable CBC.
+	</p>
+
+	<p class="countdown" data-count-date={COUNT_DATE} hidden>
+		Only <span class="days"></span> days until the {countYear} Bloomington CBC!
+	</p>
+</Page>
+
+<style>
+	.countdown {
+		margin-top: 2.5rem;
+		text-align: center;
+		font-weight: 700;
+		color: #800000;
+	}
+
+	.days {
+		padding: 0.1em 0.35em;
+		border-radius: 3px;
+		background: #000;
+		color: #fff;
+	}
+</style>
+
+<script>
+	const MS_PER_DAY = 86_400_000;
+	const countdown = document.querySelector<HTMLElement>('.countdown');
+	const daysSpan = countdown?.querySelector('.days');
+	const countDate = countdown?.dataset.countDate;
+	if (countdown && daysSpan && countDate) {
+		const [year, month, day] = countDate.split('-').map(Number);
+		const daysUntil = Math.ceil((new Date(year, month - 1, day).getTime() - Date.now()) / MS_PER_DAY);
+		if (daysUntil > 0) {
+			daysSpan.textContent = String(daysUntil);
+			countdown.hidden = false;
+		}
+	}
+</script>

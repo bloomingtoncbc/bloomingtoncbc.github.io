@@ -1,0 +1,134 @@
+---
+import Page from '../../layouts/Page.astro';
+
+const MY_MAPS = 'https://www.google.com/maps/d/viewer?usp=sharing&mid=';
+
+// Index + 1 is the area number.
+const areaMapIds = [
+	'10ecWSiC07oALogVr_baKvskXwpQdyfE',
+	'1enQBzYKVZTySfLHPphz6EhhWVujfoss',
+	'13hH9VLNBGSvLdYalVAxLvYP5jL058wY',
+	'1DH2LGAjB6Oa6-xsbBfq_wzv6BzkHEZY',
+	'1ZGN73_t7Gq_w28XgJmN9sQNvWPdUTY8',
+	'1_zoFSpMgM6gl4AuzFNXd4VdSq_35Pp4',
+	'19DhWOMxmF_1mG-zYCkub9cN81Vh6LxQ',
+	'1dn-8cMxvkS9SQ0nwqqHjqKUx-107ikI',
+	'1OCXUWF4jZ9mjR70Jgz0fIxfp9Zh5A2A',
+	'1HC_8FguPCkbglI_UQPt_almchKqLL9I',
+	'1gkc962ohDA3SjsSzBMul6leFT-mY7bQ',
+	'1NUuUvVqMG0N6J7e-yGl6UkW7KTLPzME',
+	'1SzJTtjElodIiRbflS6c9YuopI4L0L-Y',
+	'1x1Dzcw5okkvFFokRrPhzvnUK4eTYQe8',
+	'1EF7LH2lreCPLqg5JIJLwyQpJ6w-TaGM',
+	'1bNTVPnu1eCqBZpOs0UzuJSSR6SzKzBY',
+	'1gmANq8qexNVyAuQK_2hDStr1l8jAfCY',
+	'1Jyj4w1YhC9K1CfMCrBTf53_G4wgUTEA',
+	'1CLXYHBhYySV94cODDVHr_JgrE4CzqBA',
+	'1tbLl7FKBFLKHlkLs_ixfRh0t5O1TqEE',
+	'1YuBun5BwYZocJ3kGKtPcWNdA27r-qAs',
+	'1m-FbyCmvc-LgBep0b3sh5PA9n0wLzE0',
+	'17a8l_Fm0UE7wOQFCck0ZmOJoFky_6UA',
+	'14d0O5-zs2Mfxl4hdRgcI4HqYeYusQa4',
+] as const;
+
+const areas = areaMapIds.map((id, index) => ({ label: `Area #${index + 1} Map`, href: MY_MAPS + id }));
+const half = Math.ceil(areas.length / 2);
+const leftColumn = areas.slice(0, half);
+const rightColumn = areas.slice(half);
+---
+
+<Page title="Count Circle Maps" wide>
+	<p>
+		The Bloomington count circle is centered at the intersection of Hwy 77 and Hwy 13 (latitude: 44.8127, longitude:
+		-93.2199). It is a very complex circle, divided into 24 areas. (Note that as of 2024, we have divided Areas 1, 2, 3,
+		and 20 in half to create 4 new areas.)
+	</p>
+	<p>
+		Below are Google Maps for the entire count circle. You can use them for reference, and use while counting and keep
+		track of where you are in your count area using Google Maps. To use them on your phone, open an individual area map on
+		your phone, and it should bring up in Google Maps. <a href="https://drive.google.com/drive/folders/1MiNkOi9EYoEUPBSr-2HbV_SZ5tvjQHt1?usp=sharing">Printable PDF versions</a> of these maps are also available to download. To see a full screen view, click on the [ ] icon on the top right.
+	</p>
+	<p>
+		Scroll down the page to see eBird sightings and hotspots superimposed on our count circle map. If you're curious how
+		I got that data, see my code at <a href="https://github.com/lizmstanley/cbc_utils">https://github.com/lizmstanley/cbc_utils</a> (yes, I'm a software engineer.)
+	</p>
+
+	<div class="circle-maps">
+		<ul class="area-links">
+			{leftColumn.map((area) => <li><a class="button-link" href={area.href}>{area.label}</a></li>)}
+		</ul>
+		<iframe
+			class="circle-map"
+			src="https://www.google.com/maps/d/embed?mid=1LQTekqLvDBMRHiXegW45hZ1tiPSYRlo"
+			title="Bloomington count circle with all 24 areas"
+			loading="lazy"></iframe>
+		<ul class="area-links">
+			{rightColumn.map((area) => <li><a class="button-link" href={area.href}>{area.label}</a></li>)}
+		</ul>
+	</div>
+
+	<hr />
+
+	<p>
+		This area map shows recent eBird sightings that have been reported within the count circle in the last 7 days. It
+		includes different layers for notable, confirmed and provisional sightings. Click on the [ ] icon on the top right to
+		open a full screen view, and select different layers to switch between them (for example to filter out provisional
+		sightings.)
+	</p>
+	<iframe
+		src="https://www.google.com/maps/d/embed?mid=1p4yoPyQc1XeRrQMjABiijS8-1eIbZU0"
+		title="Recent eBird sightings in the count circle"
+		height="680"
+		loading="lazy"></iframe>
+
+	<hr />
+
+	<p>
+		This map shows all the eBird hotspots within our count circle. These are good locations to find birds! Click on the [ ]
+		icon on the right to open up a full screen view of the map.
+	</p>
+	<iframe
+		src="https://www.google.com/maps/d/embed?mid=14BF5L25-m4XHydXibYoarC-26BJpZHI"
+		title="eBird hotspots in the count circle"
+		height="680"
+		loading="lazy"></iframe>
+</Page>
+
+<style>
+	.circle-maps {
+		display: grid;
+		grid-template-columns: 11rem 1fr 11rem;
+		gap: 1.75rem;
+		align-items: start;
+		margin: 2rem 0;
+	}
+
+	.area-links {
+		display: grid;
+		gap: 0.9rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.area-links li {
+		margin: 0;
+	}
+
+	.circle-maps .circle-map {
+		height: 660px;
+		margin: 0;
+	}
+
+	@media (max-width: 820px) {
+		.circle-maps {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.circle-maps .circle-map {
+			grid-column: 1 / -1;
+			grid-row: 1;
+			height: 480px;
+		}
+	}
+</style>

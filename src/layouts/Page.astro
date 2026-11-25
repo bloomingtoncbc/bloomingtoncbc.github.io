@@ -1,0 +1,47 @@
+---
+import '../styles/global.css';
+import { Font, Image } from 'astro:assets';
+import banner from '../assets/banner.jpg';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+
+interface Props {
+	title?: string;
+	description?: string;
+	wide?: boolean;
+	// Markdown pages pass their frontmatter here instead of as top-level props.
+	frontmatter?: { title: string; description?: string; wide?: boolean };
+}
+
+const { title, description, wide } = Astro.props.frontmatter ?? Astro.props;
+const pageTitle = title ? `${SITE_TITLE} - ${title}` : SITE_TITLE;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<link rel="icon" type="image/png" href="/favicon.png" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<link rel="canonical" href={canonicalURL} />
+		<Font cssVariable="--font-body" preload />
+		<Font cssVariable="--font-heading" preload />
+		<title>{pageTitle}</title>
+		<meta name="description" content={description ?? 'The Bloomington MN Christmas Bird Count, active since 1966.'} />
+	</head>
+	<body>
+		<Header />
+		<div class="banner">
+			<Image src={banner} alt="" class="banner-image" widths={[800, 1400, 2016]} sizes="100vw" loading="eager" />
+			<h1>{title ?? 'Bloomington MN Christmas Bird Count'}</h1>
+		</div>
+		<main class:list={['content', { wide }]}>
+			<slot />
+		</main>
+		<Footer />
+	</body>
+</html>

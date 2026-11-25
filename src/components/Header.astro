@@ -1,0 +1,60 @@
+---
+import { COUNT_DATE, COUNT_NUMBER, NAV, SITE_TITLE } from '../consts';
+
+const countDateLabel = new Date(`${COUNT_DATE}T12:00:00Z`).toLocaleDateString('en-US', {
+	month: 'short',
+	day: 'numeric',
+	year: 'numeric',
+	timeZone: 'UTC',
+});
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<div class="announcement">The {COUNT_NUMBER} annual Bloomington CBC will be held on {countDateLabel}</div>
+<header class="site-header">
+	<a class="site-name" href="/">{SITE_TITLE}</a>
+	<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+		<span></span><span></span><span></span>
+	</button>
+	<nav id="site-nav" class="site-nav">
+		<ul>
+			{
+				NAV.map((item) =>
+					item.children ? (
+						<li class="has-children">
+							<span class:list={['nav-parent', { current: item.children.some((c) => c.href && isCurrent(c.href)) }]} tabindex="0">
+								{item.label}
+							</span>
+							<ul class="submenu">
+								{item.children.map((child) => (
+									<li>
+										<a href={child.href} aria-current={child.href && isCurrent(child.href) ? 'page' : undefined}>
+											{child.label}
+										</a>
+									</li>
+								))}
+							</ul>
+						</li>
+					) : (
+						<li>
+							<a href={item.href} class:list={{ current: item.href && isCurrent(item.href) }} aria-current={item.href && isCurrent(item.href) ? 'page' : undefined}>
+								{item.label}
+							</a>
+						</li>
+					),
+				)
+			}
+		</ul>
+	</nav>
+</header>
+
+<script>
+	const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+	const nav = document.getElementById('site-nav');
+	toggle?.addEventListener('click', () => {
+		const isOpen = nav?.classList.toggle('open') ?? false;
+		toggle.setAttribute('aria-expanded', String(isOpen));
+	});
+</script>
