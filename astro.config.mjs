@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import { defineConfig, fontProviders } from 'astro/config';
 
 export default defineConfig({
-	site: 'https://www.bloomingtoncbc.org',
+	site: 'https://bloomingtoncbc.org',
 	integrations: [sitemap()],
 	// Google Sites served the home page at /home; keep old links working.
 	redirects: {
