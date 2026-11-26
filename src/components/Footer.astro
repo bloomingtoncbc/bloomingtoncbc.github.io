@@ -1,13 +1,9 @@
 ---
-import { Image } from 'astro:assets';
-import footerArt from '../assets/footer-cbc.jpg';
-import { AUDUBON_CBC_URL, COORDINATOR_EMAIL, COORDINATOR_NAME } from '../consts';
+import { AUDUBON_CBC_URL, COORDINATOR_EMAIL, COORDINATOR_NAME, COORDINATOR_URL } from '../consts';
 ---
 
 <footer class="site-footer">
-	<Image src={footerArt} alt="" class="footer-art" widths={[800, 1200]} sizes="100vw" />
-	<div class="footer-text">
-		<p>Your Bloomington CBC circle coordinator is {COORDINATOR_NAME} <a href={`mailto:${COORDINATOR_EMAIL}`}>{COORDINATOR_EMAIL}</a></p>
-		<p><a href={AUDUBON_CBC_URL}>Audubon CBC website</a></p>
-	</div>
+	<p>Your Bloomington CBC circle coordinator is <a href={COORDINATOR_URL}>{COORDINATOR_NAME}</a></p>
+	<p><a href={`mailto:${COORDINATOR_EMAIL}`}>{COORDINATOR_EMAIL}</a></p>
+	<p><a href={AUDUBON_CBC_URL}>Audubon CBC website</a></p>
 </footer>

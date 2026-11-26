@@ -19,7 +19,11 @@ html {
 	background: var(--paper);
 }
 
+/* A column, so the footer sits at the bottom of the window on short pages. */
 body {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
 	margin: 0;
 }
 
@@ -259,6 +263,8 @@ blockquote {
 /* Main content */
 
 .content {
+	flex: 1 0 auto;
+	width: 100%;
 	max-width: 1180px;
 	margin: 0 auto;
 	padding: 2.5rem 1.5rem 4rem;
@@ -302,41 +308,18 @@ blockquote {
 /* Footer */
 
 .site-footer {
-	position: relative;
-	display: grid;
-	justify-items: center;
-	align-items: start;
-	aspect-ratio: 1200 / 512;
-	min-height: 260px;
-	max-height: 560px;
-	width: 100%;
-	overflow: hidden;
-	background: #1d3b23;
-}
-
-.footer-art {
-	position: absolute;
-	inset: 0;
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	object-position: center bottom;
-	opacity: 0.8;
-}
-
-.footer-text {
-	position: relative;
-	padding: 3.5rem 1.5rem 2rem;
-	font-family: var(--font-heading);
-	color: #fff;
+	padding: 2rem 1.5rem;
+	font-size: 0.95rem;
+	color: #d4d4d4;
 	text-align: center;
-	text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+	background: #000;
+	border-top: 8px solid var(--red);
 }
 
-.footer-text p {
+.site-footer p {
 	margin: 0.2rem 0;
 }
 
-.footer-text a {
-	color: #fff;
+.site-footer a {
+	color: inherit;
 }

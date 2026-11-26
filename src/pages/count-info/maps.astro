@@ -1,40 +1,11 @@
 ---
+import AreaDetails from '../../components/AreaDetails.astro';
+import CircleStaffing from '../../components/CircleStaffing.astro';
+import { areaMapName, areaMapPdfPath, CIRCLE_MAP_NAME } from '../../data/areaMapFiles';
+import { AREA_STAFFING } from '../../data/areaStaffing';
 import Page from '../../layouts/Page.astro';
 
-const MY_MAPS = 'https://www.google.com/maps/d/viewer?usp=sharing&mid=';
-
-// Index + 1 is the area number.
-const areaMapIds = [
-	'10ecWSiC07oALogVr_baKvskXwpQdyfE',
-	'1enQBzYKVZTySfLHPphz6EhhWVujfoss',
-	'13hH9VLNBGSvLdYalVAxLvYP5jL058wY',
-	'1DH2LGAjB6Oa6-xsbBfq_wzv6BzkHEZY',
-	'1ZGN73_t7Gq_w28XgJmN9sQNvWPdUTY8',
-	'1_zoFSpMgM6gl4AuzFNXd4VdSq_35Pp4',
-	'19DhWOMxmF_1mG-zYCkub9cN81Vh6LxQ',
-	'1dn-8cMxvkS9SQ0nwqqHjqKUx-107ikI',
-	'1OCXUWF4jZ9mjR70Jgz0fIxfp9Zh5A2A',
-	'1HC_8FguPCkbglI_UQPt_almchKqLL9I',
-	'1gkc962ohDA3SjsSzBMul6leFT-mY7bQ',
-	'1NUuUvVqMG0N6J7e-yGl6UkW7KTLPzME',
-	'1SzJTtjElodIiRbflS6c9YuopI4L0L-Y',
-	'1x1Dzcw5okkvFFokRrPhzvnUK4eTYQe8',
-	'1EF7LH2lreCPLqg5JIJLwyQpJ6w-TaGM',
-	'1bNTVPnu1eCqBZpOs0UzuJSSR6SzKzBY',
-	'1gmANq8qexNVyAuQK_2hDStr1l8jAfCY',
-	'1Jyj4w1YhC9K1CfMCrBTf53_G4wgUTEA',
-	'1CLXYHBhYySV94cODDVHr_JgrE4CzqBA',
-	'1tbLl7FKBFLKHlkLs_ixfRh0t5O1TqEE',
-	'1YuBun5BwYZocJ3kGKtPcWNdA27r-qAs',
-	'1m-FbyCmvc-LgBep0b3sh5PA9n0wLzE0',
-	'17a8l_Fm0UE7wOQFCck0ZmOJoFky_6UA',
-	'14d0O5-zs2Mfxl4hdRgcI4HqYeYusQa4',
-] as const;
-
-const areas = areaMapIds.map((id, index) => ({ label: `Area #${index + 1} Map`, href: MY_MAPS + id }));
-const half = Math.ceil(areas.length / 2);
-const leftColumn = areas.slice(0, half);
-const rightColumn = areas.slice(half);
+const CBC_SCOUT_URL = 'https://lizstanley.com/birdspotter/cbc/scout/';
 ---
 
 <Page title="Count Circle Maps" wide>
@@ -44,90 +15,224 @@ const rightColumn = areas.slice(half);
 		and 20 in half to create 4 new areas.)
 	</p>
 	<p>
-		Below are Google Maps for the entire count circle. You can use them for reference, and use while counting and keep
-		track of where you are in your count area using Google Maps. To use them on your phone, open an individual area map on
-		your phone, and it should bring up in Google Maps. <a href="https://drive.google.com/drive/folders/1MiNkOi9EYoEUPBSr-2HbV_SZ5tvjQHt1?usp=sharing">Printable PDF versions</a> of these maps are also available to download. To see a full screen view, click on the [ ] icon on the top right.
-	</p>
-	<p>
-		Scroll down the page to see eBird sightings and hotspots superimposed on our count circle map. If you're curious how
-		I got that data, see my code at <a href="https://github.com/lizmstanley/cbc_utils">https://github.com/lizmstanley/cbc_utils</a> (yes, I'm a software engineer.)
+		Click an area on the map to see how it's best covered and to download a printable map of it. To keep track of where
+		you are while counting, use the <a href="#cbc-scout">CBC Scout</a> app on your phone.
 	</p>
 
 	<div class="circle-maps">
-		<ul class="area-links">
-			{leftColumn.map((area) => <li><a class="button-link" href={area.href}>{area.label}</a></li>)}
-		</ul>
-		<iframe
-			class="circle-map"
-			src="https://www.google.com/maps/d/embed?mid=1LQTekqLvDBMRHiXegW45hZ1tiPSYRlo"
-			title="Bloomington count circle with all 24 areas"
-			loading="lazy"></iframe>
-		<ul class="area-links">
-			{rightColumn.map((area) => <li><a class="button-link" href={area.href}>{area.label}</a></li>)}
-		</ul>
+		<div class="map-column">
+			<div class="circle-map" id="circle-map" role="region" aria-label="Map of the Bloomington count circle and its 24 areas">
+			</div>
+			<p class="embed-caption">
+				The gray, dashed area at the north edge of the circle is counted by the St. Paul CBC, not by us.
+			</p>
+		</div>
+
+		<section class="cbc-scout" id="cbc-scout">
+			<h2>CBC Scout: your area on your phone</h2>
+			<p>
+				<a href={CBC_SCOUT_URL}>CBC Scout</a> is a free phone app for our field counters. It shows your area on a map and
+				where you are, so you can tell whether you're inside your area, outside it, or outside the circle. It also shows
+				what's been seen nearby and suggests places to visit in your area. On count day it can record your party's hours and
+				miles, by vehicle and by foot, and send them as the line for your count sheet. There's no account to make, and
+				nothing about you leaves your phone.
+			</p>
+			<ol>
+				<li>
+					<strong>Install it.</strong> Open <a href={CBC_SCOUT_URL}>{CBC_SCOUT_URL}</a> on your phone. On iPhone, tap{' '}
+					<strong>Share</strong> in Safari, then <strong>Add to Home Screen</strong>. On Android, tap <strong>Install</strong>{' '}
+					on the bar at the top in Chrome.
+				</li>
+				<li>
+					<strong>Add an eBird key.</strong> The first screen asks for a free eBird API key and links to the page where you
+					request one. It's used for the nearby sightings and hotspots.
+				</li>
+				<li>
+					<strong>Load your area.</strong> I'll send you a link or a QR code for your area. Open the link, or in the app open{' '}
+					<strong>Your areas</strong> from the menu and tap <strong>Scan area code</strong> or <strong>Paste link</strong>.
+				</li>
+			</ol>
+			<p>
+				CBC Scout needs a cell signal to show the map. Keep using our <a href="/count-info/count-sheet/">official count
+				sheet</a> for your birds.
+			</p>
+		</section>
+
+		<div class="area-panel" aria-live="polite">
+			<section class="area-detail" data-area-detail="all">
+				<h2>Covering the circle</h2>
+				<CircleStaffing hasAreaButtons />
+				<p class="download">
+					<a href={areaMapPdfPath(areaMapName(CIRCLE_MAP_NAME))} download>Download the circle map (PDF)</a>
+				</p>
+			</section>
+
+			{
+				AREA_STAFFING.map((staffing) => (
+					<section class="area-detail" data-area-detail={staffing.area} hidden>
+						<div class="detail-head">
+							<h2>Area {staffing.area}</h2>
+							<button type="button" class="show-all" data-select-area="all">
+								Show All Areas
+							</button>
+						</div>
+						<AreaDetails staffing={staffing} />
+						<p class="download">
+							<a href={areaMapPdfPath(areaMapName(staffing.area))} download>
+								Download the Area {staffing.area} map (PDF)
+							</a>
+						</p>
+					</section>
+				))
+			}
+		</div>
 	</div>
 
-	<hr />
-
-	<p>
-		This area map shows recent eBird sightings that have been reported within the count circle in the last 7 days. It
-		includes different layers for notable, confirmed and provisional sightings. Click on the [ ] icon on the top right to
-		open a full screen view, and select different layers to switch between them (for example to filter out provisional
-		sightings.)
-	</p>
-	<iframe
-		src="https://www.google.com/maps/d/embed?mid=1p4yoPyQc1XeRrQMjABiijS8-1eIbZU0"
-		title="Recent eBird sightings in the count circle"
-		height="680"
-		loading="lazy"></iframe>
-
-	<hr />
-
-	<p>
-		This map shows all the eBird hotspots within our count circle. These are good locations to find birds! Click on the [ ]
-		icon on the right to open up a full screen view of the map.
-	</p>
-	<iframe
-		src="https://www.google.com/maps/d/embed?mid=14BF5L25-m4XHydXibYoarC-26BJpZHI"
-		title="eBird hotspots in the count circle"
-		height="680"
-		loading="lazy"></iframe>
 </Page>
+
+<script>
+	import { ALL_AREAS, createAreaMap, isArea, showArea } from '../../scripts/areaMap';
+
+	const AREA_HASH = /^#area-(\d+)$/;
+
+	function selectionFromHash(): string {
+		const area = AREA_HASH.exec(window.location.hash)?.[1];
+		return area && isArea(area) ? area : ALL_AREAS;
+	}
+
+	const container = document.getElementById('circle-map');
+	if (!container) throw new Error('maps: no #circle-map element');
+	const map = createAreaMap({ container, initialArea: selectionFromHash(), isInteractive: true });
+
+	function showPanel(selected: string) {
+		for (const panel of document.querySelectorAll<HTMLElement>('[data-area-detail]')) {
+			panel.hidden = panel.dataset.areaDetail !== selected;
+		}
+	}
+
+	function select(selected: string) {
+		const hash = selected === ALL_AREAS ? '' : `#area-${selected}`;
+		history.replaceState(null, '', `${window.location.pathname}${window.location.search}${hash}`);
+		showPanel(selected);
+		showArea(map, selected);
+		const mapTop = container.getBoundingClientRect().top;
+		if (mapTop < 0 || mapTop > window.innerHeight / 2) {
+			container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		}
+	}
+
+	map.on('click', 'area-fill', (event) => {
+		const area = event.features?.[0]?.properties.area;
+		if (typeof area === 'string') select(area);
+	});
+	map.on('mouseenter', 'area-fill', () => {
+		map.getCanvas().style.cursor = 'pointer';
+	});
+	map.on('mouseleave', 'area-fill', () => {
+		map.getCanvas().style.cursor = '';
+	});
+
+	for (const button of document.querySelectorAll<HTMLButtonElement>('[data-select-area]')) {
+		button.addEventListener('click', () => select(button.dataset.selectArea ?? ALL_AREAS));
+	}
+	window.addEventListener('hashchange', () => {
+		const selected = selectionFromHash();
+		showPanel(selected);
+		showArea(map, selected);
+	});
+	showPanel(selectionFromHash());
+</script>
 
 <style>
 	.circle-maps {
 		display: grid;
-		grid-template-columns: 11rem 1fr 11rem;
-		gap: 1.75rem;
+		grid-template-columns: minmax(0, 1.7fr) minmax(18rem, 1fr);
+		grid-template-rows: auto 1fr;
+		grid-template-areas:
+			'map panel'
+			'scout panel';
+		gap: 1.5rem;
 		align-items: start;
 		margin: 2rem 0;
 	}
 
-	.area-links {
-		display: grid;
-		gap: 0.9rem;
-		margin: 0;
-		padding: 0;
-		list-style: none;
+	.map-column {
+		grid-area: map;
 	}
 
-	.area-links li {
-		margin: 0;
+	.area-panel {
+		grid-area: panel;
 	}
 
-	.circle-maps .circle-map {
-		height: 660px;
-		margin: 0;
+	.map-column .embed-caption {
+		margin-top: 0.5rem;
 	}
 
-	@media (max-width: 820px) {
+	.cbc-scout {
+		grid-area: scout;
+		scroll-margin-top: calc(var(--nav-height) + 0.75rem);
+	}
+
+	.cbc-scout h2 {
+		margin-top: 0;
+	}
+
+	.circle-map {
+		height: 680px;
+		border-radius: 4px;
+		overflow: hidden;
+		scroll-margin-top: calc(var(--nav-height) + 0.75rem);
+	}
+
+	.area-detail {
+		padding: 1.25rem 1.5rem;
+		background: #fff;
+		border-left: 4px solid var(--red);
+		border-radius: 4px;
+	}
+
+	.area-detail h2 {
+		margin: 0 0 0.75rem;
+	}
+
+	.detail-head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 0.5rem 1rem;
+	}
+
+	.show-all {
+		padding: 0.3rem 1rem;
+		font: inherit;
+		background: var(--gold);
+		color: var(--ink);
+		border: 0;
+		border-radius: 4px;
+		cursor: pointer;
+	}
+
+	.show-all:hover {
+		background: #ffca28;
+	}
+
+	.download {
+		margin: 1rem 0 0;
+		font-weight: 700;
+	}
+
+	@media (max-width: 900px) {
 		.circle-maps {
-			grid-template-columns: 1fr 1fr;
+			grid-template-columns: 1fr;
+			grid-template-rows: auto;
+			grid-template-areas:
+				'map'
+				'panel'
+				'scout';
 		}
 
-		.circle-maps .circle-map {
-			grid-column: 1 / -1;
-			grid-row: 1;
+		.circle-map {
 			height: 480px;
 		}
 	}

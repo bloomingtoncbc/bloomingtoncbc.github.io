@@ -6,6 +6,7 @@ export const COUNT_DATE = '2026-12-19';
 
 export const COORDINATOR_NAME = 'Liz Stanley';
 export const COORDINATOR_EMAIL = 'bloomingtonmncbc@gmail.com';
+export const COORDINATOR_URL = 'https://lizstanley.com/';
 export const AUDUBON_CBC_URL = 'https://www.audubon.org/community-science/christmas-bird-count';
 
 export interface NavItem {

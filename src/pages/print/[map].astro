@@ -1,0 +1,135 @@
+---
+// One letter-size page per area map, printed to PDF by scripts/area-pdfs.mjs. Not linked from the site.
+import { Font } from 'astro:assets';
+import AreaDetails from '../../components/AreaDetails.astro';
+import CircleStaffing from '../../components/CircleStaffing.astro';
+import { areaMapName, CIRCLE_MAP_NAME } from '../../data/areaMapFiles';
+import { AREA_STAFFING, type AreaStaffing } from '../../data/areaStaffing';
+import { SITE_TITLE } from '../../consts';
+import '../../styles/global.css';
+
+export function getStaticPaths() {
+	return [
+		{ params: { map: areaMapName(CIRCLE_MAP_NAME) }, props: { staffing: undefined } },
+		...AREA_STAFFING.map((staffing) => ({ params: { map: areaMapName(staffing.area) }, props: { staffing } })),
+	];
+}
+
+interface Props {
+	staffing: AreaStaffing | undefined;
+}
+
+const { staffing } = Astro.props;
+const heading = staffing ? `Area ${staffing.area}` : 'Count Circle';
+const pageLink = staffing ? `bloomingtoncbc.org/count-info/maps/#area-${staffing.area}` : 'bloomingtoncbc.org/count-info/maps/';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="robots" content="noindex" />
+		<Font cssVariable="--font-body" preload />
+		<Font cssVariable="--font-heading" preload />
+		<title>{SITE_TITLE} - {heading} map</title>
+	</head>
+	<body>
+		<main class:list={['sheet', { circle: !staffing }]}>
+			<header>
+				<p class="eyebrow">{SITE_TITLE}</p>
+				<h1>{heading}</h1>
+			</header>
+			<div class="print-map" id="print-map" data-area={staffing ? String(staffing.area) : 'all'}></div>
+			<section class="details">
+				{staffing ? <AreaDetails staffing={staffing} /> : <CircleStaffing />}
+			</section>
+			<footer>
+				<span>{pageLink}</span>
+				<span>Map © OpenStreetMap contributors, OpenMapTiles, OpenFreeMap</span>
+			</footer>
+		</main>
+	</body>
+</html>
+
+<script>
+	import { createAreaMap } from '../../scripts/areaMap';
+
+	const container = document.getElementById('print-map');
+	if (!container) throw new Error('print: no #print-map element');
+	const map = createAreaMap({ container, initialArea: container.dataset.area ?? 'all', isInteractive: false, padding: 30 });
+	map.once('load', () => {
+		map.once('idle', () => {
+			document.body.dataset.mapReady = 'true';
+		});
+	});
+</script>
+
+<style>
+	@page {
+		size: letter;
+		margin: 0.4in;
+	}
+
+	html,
+	body {
+		background: #fff;
+	}
+
+	body {
+		margin: 0;
+		font-size: 11pt;
+		line-height: 1.4;
+	}
+
+	.sheet {
+		display: grid;
+		gap: 0.15in;
+		width: 7.7in;
+		height: 10.1in;
+		grid-template-rows: auto 6.2in 1fr auto;
+	}
+
+	.sheet.circle {
+		grid-template-rows: auto 5.4in 1fr auto;
+		font-size: 10pt;
+		line-height: 1.35;
+	}
+
+	header {
+		border-bottom: 3px solid var(--red);
+	}
+
+	.eyebrow {
+		margin: 0;
+		font-size: 10pt;
+		font-weight: 700;
+		color: var(--red);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	h1 {
+		margin: 0 0 0.05in;
+		font-size: 24pt;
+	}
+
+	.print-map {
+		border: 1px solid #94a3b8;
+	}
+
+	.print-map :global(.maplibregl-ctrl-attrib) {
+		display: none;
+	}
+
+	.details :global(p) {
+		margin: 0.04in 0;
+	}
+
+	footer {
+		display: flex;
+		justify-content: space-between;
+		gap: 0.2in;
+		font-size: 8pt;
+		color: #475569;
+	}
+</style>

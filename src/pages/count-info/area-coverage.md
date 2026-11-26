@@ -7,8 +7,8 @@ title: Area Coverage
 
 There are **24 areas** in the count circle. Most areas have a designated leader who aggregates data and submits the count sheet for that area. Some areas are not as well established, or are done solo.
 
-- I created a [Google map of the circle](https://www.google.com/maps/d/edit?mid=1LQTekqLvDBMRHiXegW45hZ1tiPSYRlo&usp=sharing) which includes the outline of each area.
-  - Each area also has its own separate map, which you can access on your phone in Google Maps. See [Maps](/count-info/maps/).
+- The [Maps](/count-info/maps/) page shows the outline of each area, and how many counters and parties each area needs.
+  - On your phone, use [CBC Scout](/count-info/maps/#cbc-scout) to see your area and where you are in it.
   - I've added [PDF versions of the maps](https://drive.google.com/drive/folders/1MiNkOi9EYoEUPBSr-2HbV_SZ5tvjQHt1?usp=sharing) in case anyone wants to print out a map.
 - Area leaders, let me know if:
   - You are open to new counters in your area, and/or need additional counters for coverage. If so, I'll make sure to coordinate that as new people join (and I'll let you know their experience level, etc.)

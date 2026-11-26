@@ -5,7 +5,8 @@ import { defineConfig, fontProviders } from 'astro/config';
 
 export default defineConfig({
 	site: 'https://bloomingtoncbc.org',
-	integrations: [sitemap()],
+	// The print pages exist only to make the area map PDFs.
+	integrations: [sitemap({ filter: (page) => !page.includes('/print/') })],
 	// Google Sites served the home page at /home; keep old links working.
 	redirects: {
 		'/home': '/',
