@@ -28,6 +28,36 @@ const CBC_SCOUT_URL = 'https://lizstanley.com/birdspotter/cbc/scout/';
 			</p>
 		</div>
 
+		<section class="cbc-scout" id="cbc-scout">
+			<h2>CBC Scout: your area on your phone</h2>
+			<p>
+				<a href={CBC_SCOUT_URL}>CBC Scout</a> is a free phone app for our field counters. It shows your area on a map and
+				where you are, so you can tell whether you're inside your area, outside it, or outside the circle. It also shows
+				what's been seen nearby and suggests places to visit in your area. On count day it can record your party's hours and
+				miles, by vehicle and by foot, and send them as the line for your count sheet. There's no account to make, and
+				nothing about you leaves your phone.
+			</p>
+			<ol>
+				<li>
+					<strong>Install it.</strong> Open <a href={CBC_SCOUT_URL}>{CBC_SCOUT_URL}</a> on your phone. On iPhone, tap{' '}
+					<strong>Share</strong> in Safari, then <strong>Add to Home Screen</strong>. On Android, tap <strong>Install</strong>{' '}
+					on the bar at the top in Chrome.
+				</li>
+				<li>
+					<strong>Add an eBird key.</strong> The first screen asks for a free eBird API key and links to the page where you
+					request one. It's used for the nearby sightings and hotspots.
+				</li>
+				<li>
+					<strong>Load your area.</strong> I'll send you a link or a QR code for your area. Open the link, or in the app open{' '}
+					<strong>Your areas</strong> from the menu and tap <strong>Scan area code</strong> or <strong>Paste link</strong>.
+				</li>
+			</ol>
+			<p>
+				CBC Scout needs a cell signal to show the map. Keep using our <a href="/count-info/count-sheet/">official count
+				sheet</a> for your birds.
+			</p>
+		</section>
+
 		<div class="area-panel" aria-live="polite">
 			<section class="area-detail" data-area-detail="all">
 				<h2>Covering the circle</h2>
@@ -58,35 +88,6 @@ const CBC_SCOUT_URL = 'https://lizstanley.com/birdspotter/cbc/scout/';
 		</div>
 	</div>
 
-	<hr />
-
-	<h2 id="cbc-scout">CBC Scout: your area on your phone</h2>
-	<p>
-		<a href={CBC_SCOUT_URL}>CBC Scout</a> is a free phone app for our field counters. It shows your area on a map and
-		where you are, so you can tell whether you're inside your area, outside it, or outside the circle. It also shows
-		what's been seen nearby and suggests places to visit in your area. On count day it can record your party's hours and
-		miles, by vehicle and by foot, and send them as the line for your count sheet. There's no account to make, and
-		nothing about you leaves your phone.
-	</p>
-	<ol>
-		<li>
-			<strong>Install it.</strong> Open <a href={CBC_SCOUT_URL}>{CBC_SCOUT_URL}</a> on your phone. On iPhone, tap{' '}
-			<strong>Share</strong> in Safari, then <strong>Add to Home Screen</strong>. On Android, tap <strong>Install</strong>{' '}
-			on the bar at the top in Chrome.
-		</li>
-		<li>
-			<strong>Add an eBird key.</strong> The first screen asks for a free eBird API key and links to the page where you
-			request one. It's used for the nearby sightings and hotspots.
-		</li>
-		<li>
-			<strong>Load your area.</strong> I'll send you a link or a QR code for your area. Open the link, or in the app open{' '}
-			<strong>Your areas</strong> from the menu and tap <strong>Scan area code</strong> or <strong>Paste link</strong>.
-		</li>
-	</ol>
-	<p>
-		CBC Scout needs a cell signal to show the map. Keep using our <a href="/count-info/count-sheet/">official count
-		sheet</a> for your birds.
-	</p>
 </Page>
 
 <script>
@@ -146,13 +147,34 @@ const CBC_SCOUT_URL = 'https://lizstanley.com/birdspotter/cbc/scout/';
 	.circle-maps {
 		display: grid;
 		grid-template-columns: minmax(0, 1.7fr) minmax(18rem, 1fr);
+		grid-template-rows: auto 1fr;
+		grid-template-areas:
+			'map panel'
+			'scout panel';
 		gap: 1.5rem;
 		align-items: start;
 		margin: 2rem 0;
 	}
 
+	.map-column {
+		grid-area: map;
+	}
+
+	.area-panel {
+		grid-area: panel;
+	}
+
 	.map-column .embed-caption {
 		margin-top: 0.5rem;
+	}
+
+	.cbc-scout {
+		grid-area: scout;
+		scroll-margin-top: calc(var(--nav-height) + 0.75rem);
+	}
+
+	.cbc-scout h2 {
+		margin-top: 0;
 	}
 
 	.circle-map {
@@ -203,6 +225,11 @@ const CBC_SCOUT_URL = 'https://lizstanley.com/birdspotter/cbc/scout/';
 	@media (max-width: 900px) {
 		.circle-maps {
 			grid-template-columns: 1fr;
+			grid-template-rows: auto;
+			grid-template-areas:
+				'map'
+				'panel'
+				'scout';
 		}
 
 		.circle-map {
