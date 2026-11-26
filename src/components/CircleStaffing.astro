@@ -1,0 +1,82 @@
+---
+import { CIRCLE_STAFFING, COVERAGE_GROUPS } from '../data/areaStaffing';
+
+interface Props {
+	/** Renders each area as a button that picks it on the map. */
+	hasAreaButtons?: boolean;
+}
+
+const { hasAreaButtons = false } = Astro.props;
+---
+
+<p>
+	At minimum, <strong>{CIRCLE_STAFFING.minimum.people} field counters in {CIRCLE_STAFFING.minimum.parties} parties</strong>{' '}
+	cover each area's main habitats and core hotspots without leaving major gaps. Ideally,{' '}
+	<strong>{CIRCLE_STAFFING.ideal.people} field counters in {CIRCLE_STAFFING.ideal.parties} parties</strong> cover it
+	thoroughly, with observers in pairs so one can drive or scope while the other spots and records.
+</p>
+<dl class="coverage-groups">
+	{
+		COVERAGE_GROUPS.map((group) => (
+			<div>
+				<dt>
+					{group.title}
+					{!hasAreaButtons && `: Areas ${group.areas.join(', ')}`}
+				</dt>
+				<dd>
+					<p>{group.description}</p>
+					{hasAreaButtons && (
+						<p class="area-chips">
+							{group.areas.map((area) => (
+								<button type="button" class="area-chip" data-select-area={area}>
+									Area {area}
+								</button>
+							))}
+						</p>
+					)}
+				</dd>
+			</div>
+		))
+	}
+</dl>
+
+<style>
+	.coverage-groups {
+		display: grid;
+		gap: 0.75rem;
+		margin: 0;
+	}
+
+	.coverage-groups dt {
+		font-weight: 700;
+	}
+
+	.coverage-groups dd {
+		margin: 0;
+	}
+
+	.coverage-groups dd p {
+		margin: 0.25rem 0;
+	}
+
+	.area-chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+	}
+
+	.area-chip {
+		padding: 0.15rem 0.6rem;
+		font: inherit;
+		font-size: 0.9rem;
+		background: var(--gold);
+		color: var(--ink);
+		border: 0;
+		border-radius: 999px;
+		cursor: pointer;
+	}
+
+	.area-chip:hover {
+		background: #ffca28;
+	}
+</style>
