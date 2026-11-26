@@ -312,7 +312,8 @@ blockquote {
 	font-family: var(--font-heading);
 	color: #fff;
 	text-align: center;
-	background: var(--red);
+	background: #000;
+	border-top: 8px solid var(--red);
 }
 
 .site-footer p {
