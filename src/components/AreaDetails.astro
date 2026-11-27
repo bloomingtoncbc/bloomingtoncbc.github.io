@@ -1,5 +1,6 @@
 ---
 import { staffingText, type AreaStaffing } from '../data/areaStaffing';
+import ScoutQrCode from './ScoutQrCode.astro';
 
 interface Props {
 	staffing: AreaStaffing;
@@ -32,6 +33,7 @@ const { staffing } = Astro.props;
 </dl>
 <p><strong>Minimum:</strong> {staffing.minimumNote}</p>
 <p><strong>Ideal:</strong> {staffing.idealNote}</p>
+<ScoutQrCode area={staffing.area} />
 
 <style>
 	.area-stats {

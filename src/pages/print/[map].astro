@@ -86,7 +86,7 @@ const pageLink = staffing ? `bloomingtoncbc.org/count-info/maps/#area-${staffing
 		gap: 0.15in;
 		width: 7.7in;
 		height: 10.1in;
-		grid-template-rows: auto 6.2in 1fr auto;
+		grid-template-rows: auto 5.9in 1fr auto;
 	}
 
 	.sheet.circle {
@@ -123,6 +123,21 @@ const pageLink = staffing ? `bloomingtoncbc.org/count-info/maps/#area-${staffing
 
 	.details :global(p) {
 		margin: 0.04in 0;
+	}
+
+	.sheet:not(.circle) .details {
+		display: grid;
+		grid-template-columns: 1fr 2.4in;
+		grid-auto-rows: min-content;
+		column-gap: 0.25in;
+	}
+
+	.details :global(.scout-qr) {
+		grid-column: 2;
+		grid-row: 1 / span 3;
+		margin: 0;
+		font-size: 9pt;
+		line-height: 1.3;
 	}
 
 	footer {
