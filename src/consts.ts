@@ -8,6 +8,7 @@ export const COORDINATOR_NAME = 'Liz Stanley';
 export const COORDINATOR_EMAIL = 'bloomingtonmncbc@gmail.com';
 export const COORDINATOR_URL = 'https://lizstanley.com/';
 export const AUDUBON_CBC_URL = 'https://www.audubon.org/community-science/christmas-bird-count';
+export const CBC_SCOUT_URL = 'https://lizstanley.com/birdspotter/cbc/scout/';
 
 export interface NavItem {
 	readonly label: string;

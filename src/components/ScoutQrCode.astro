@@ -1,0 +1,80 @@
+---
+import qrcode from 'qrcode-generator';
+import { areaScoutLink } from '../data/areaScoutLinks';
+
+interface Props {
+	area: number;
+}
+
+const { area } = Astro.props;
+const QUIET_ZONE_MODULES = 4;
+
+const link = areaScoutLink(area);
+const qr = qrcode(0, 'M');
+qr.addData(link, 'Byte');
+qr.make();
+
+const moduleCount = qr.getModuleCount();
+const size = moduleCount + 2 * QUIET_ZONE_MODULES;
+
+/** @returns one subpath per run of dark modules in a row, offset by the quiet zone */
+function darkModulesPath(): string {
+	const runs: string[] = [];
+	for (let row = 0; row < moduleCount; row += 1) {
+		let col = 0;
+		while (col < moduleCount) {
+			if (!qr.isDark(row, col)) {
+				col += 1;
+				continue;
+			}
+			const start = col;
+			while (col < moduleCount && qr.isDark(row, col)) col += 1;
+			runs.push(`M${start + QUIET_ZONE_MODULES} ${row + QUIET_ZONE_MODULES}h${col - start}v1h-${col - start}z`);
+		}
+	}
+	return runs.join('');
+}
+---
+
+<figure class="scout-qr">
+	<a href={link}>
+		<svg viewBox={`0 0 ${size} ${size}`} shape-rendering="crispEdges" role="img" aria-label={`QR code that loads Area ${area} in CBC Scout`}>
+			<rect width={size} height={size} fill="#fff"></rect>
+			<path d={darkModulesPath()} fill="#000"></path>
+		</svg>
+	</a>
+	<figcaption>
+		To load Area {area}, open <strong>Your areas</strong> from the menu in <strong>CBC Scout</strong>, tap <strong>Scan QR code</strong>,
+		and scan this code.
+		<span class="tap-hint">
+			On the phone with CBC Scout, touch and hold the code, copy the link, and tap <strong>Paste link</strong> instead.
+		</span>
+	</figcaption>
+</figure>
+
+<style>
+	.scout-qr {
+		margin: 1rem 0 0;
+	}
+
+	.scout-qr a {
+		display: block;
+		width: min(100%, 20rem);
+	}
+
+	.scout-qr svg {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.scout-qr figcaption {
+		margin-top: 0.25rem;
+	}
+
+	@media print {
+		.tap-hint {
+			display: none;
+		}
+	}
+</style>

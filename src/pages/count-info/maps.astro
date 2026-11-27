@@ -4,8 +4,7 @@ import CircleStaffing from '../../components/CircleStaffing.astro';
 import { areaMapName, areaMapPdfPath, CIRCLE_MAP_NAME } from '../../data/areaMapFiles';
 import { AREA_STAFFING } from '../../data/areaStaffing';
 import Page from '../../layouts/Page.astro';
-
-const CBC_SCOUT_URL = 'https://lizstanley.com/birdspotter/cbc/scout/';
+import { CBC_SCOUT_URL } from '../../consts';
 ---
 
 <Page title="Count Circle Maps" wide>
@@ -48,8 +47,10 @@ const CBC_SCOUT_URL = 'https://lizstanley.com/birdspotter/cbc/scout/';
 					request one. It's used for the nearby sightings and hotspots.
 				</li>
 				<li>
-					<strong>Load your area.</strong> I'll send you a link or a QR code for your area. Open the link, or in the app open{' '}
-					<strong>Your areas</strong> from the menu and tap <strong>Scan area code</strong> or <strong>Paste link</strong>.
+					<strong>Load your area.</strong> Tap or click your area on the map to see its QR code. Your area's printed map has the
+					same code. In the app, open <strong>Your areas</strong> from the menu, tap <strong>Scan QR code</strong>, and scan
+					it. If you're reading this on the phone with the app, touch and hold the code, copy the link, and tap{' '}
+					<strong>Paste link</strong> in the app instead. A link opened in the browser doesn't reach the installed app.
 				</li>
 			</ol>
 			<p>
